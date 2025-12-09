@@ -102,3 +102,36 @@ python3 assembler.py program.asm program.bin
 ```bash
 python3 assembler.py program.asm program.bin --test
 ```
+**Запуск тестов из спецификации УВМ**:
+```bash
+python3 run_tests.py
+```
+**Создание и тестирование примеров**:
+```bash
+# Создание тестового файла
+echo "const 125" > test.asm
+echo "load 558" >> test.asm
+echo "store" >> test.asm
+echo "bitrev" >> test.asm
+
+# Компиляция с выводом промежуточного представления
+python3 assembler.py test.asm test.bin --test
+
+# Просмотр бинарного файла (Linux/macOS)
+hexdump -C test.bin
+```
+### Аргументы командной строки assembler.py:
+
+```bash
+# Синтаксис:
+python3 assembler.py <input.asm> <output.bin> [--test]
+
+# Параметры:
+#   <input.asm>   - обязательный, путь к исходному файлу .asm
+#   <output.bin>  - обязательный, путь к выходному файлу .bin  
+#   --test        - необязательный, включает режим тестирования
+
+# Примеры:
+python3 assembler.py program.asm program.bin
+python3 assembler.py program.asm program.bin --test
+
