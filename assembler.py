@@ -3,6 +3,7 @@
 Ассемблер для учебной виртуальной машины (УВМ)
 Вариант №23
 Этап 1: Перевод программы в промежуточное представление
+Этап 2: Формирование машинного кода
 """
 
 import sys
@@ -228,6 +229,15 @@ class Assembler:
             result.append("")
         
         return '\n'.join(result)
+    
+    def print_machine_code(self, binary: bytes):
+        """Вывод машинного кода в байтовом формате как в спецификации (этап 2)"""
+        print("Байтовое представление:")
+        
+        for i in range(0, len(binary), 4):
+            chunk = binary[i:i+4]
+            hex_bytes = ', '.join(f'0x{b:02X}' for b in chunk)
+            print(f"Команда {i//4}: [{hex_bytes}]")
 
 
 def main():
@@ -250,28 +260,25 @@ def main():
         assembler = Assembler()
         program = assembler.assemble(source)
         
-        if test_mode:
-            # Вывод промежуточного представления
-            print("=== ПРОМЕЖУТОЧНОЕ ПРЕДСТАВЛЕНИЕ ===")
-            print(assembler.format_intermediate(program))
-            print("\n=== БИНАРНОЕ ПРЕДСТАВЛЕНИЕ (hex) ===")
-            
-        # Генерация бинарного файла
+        # Генерация машинного кода (этап 2)
         binary = assembler.to_binary(program)
         
-        # Вывод бинарного представления в тестовом режиме
-        if test_mode:
-            for i in range(0, len(binary), 4):
-                chunk = binary[i:i+4]
-                hex_str = ', '.join(f'0x{b:02X}' for b in chunk)
-                print(f"Слово {i//4}: [{hex_str}]")
-        
-        # Запись в файл
+        # Запись в двоичный файл
         with open(output_file, 'wb') as f:
             f.write(binary)
-            
+        
+        # Вывод числа ассемблированных команд (требование этапа 2)
         print(f"Успешно! Скомпилировано {len(program)} команд в {output_file}")
         
+        if test_mode:
+            # Вывод промежуточного представления (этап 1)
+            print("\n=== ПРОМЕЖУТОЧНОЕ ПРЕДСТАВЛЕНИЕ ===")
+            print(assembler.format_intermediate(program))
+            
+            # Вывод машинного кода в байтовом формате (этап 2)
+            print("\n=== МАШИННЫЙ КОД (hex) ===")
+            assembler.print_machine_code(binary)
+            
     except Exception as e:
         print(f"Ошибка: {e}")
         sys.exit(1)
