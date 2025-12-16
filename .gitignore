@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Бинарные файлы
+*.bin
+*.exe
+*.out
+
+# Системные
+.DS_Store
+Thumbs.db
+
+# Временные
+*.tmp
+*.temp
+*.log
+
+# Git
+COMMIT_EDITMSG
